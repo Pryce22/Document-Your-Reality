@@ -1,0 +1,47 @@
+# ── LLM (OpenAI-compatible API) ─────────────────────────────────────────────
+# Any provider serving /v1/chat/completions: Ollama, vLLM, LM Studio, OpenAI.
+# It MUST be a vision model that can produce bounding boxes: without a box there
+# is nothing to anchor a label to. Check yours with scripts/check_model.py
+llm:
+  base_url: http://100.65.250.109:11434/v1
+  api_key: "none"          # "none" for a local Ollama, your API key for cloud
+  model: gemma4:e2b        # overridden by DYR_LLM_MODEL in .env
+  max_tokens: 1024         # memory updates (text only)
+  scan_max_tokens: 2048    # a ceiling, not a reservation: the brake on a model that repeats itself
+  # Server-side JSON schema on the scan reply; the stream stays incremental, so labels
+  # still arrive one by one. Needs disable_thinking.
+  scan_constrained: false
+  timeout_s: 360           # the Unity scan timeout must be HIGHER than this
+  temperature: 0           # 0 = deterministic, 1 = random
+  max_image_px: 896        # target for the frame's SHORT side, long side capped at 2x (0 = off)
+  image_jpeg_quality: 80   # JPEG quality after downscaling
+  keep_warm_interval_s: 240  # keep-warm ping every N seconds (0 = probe once at startup)
+
+storage:
+  entities_dir: ./data/entities
+  annotations_dir: ./data/annotations
+  captures_dir: ./data/captures
+
+# ── Scanning: how a frame becomes MR labels ─────────────────────────────────
+# A SCAN IS ONE CALL: the model finds every object, says which ones are already known,
+# and describes only the rest.
+scan:
+  max_objects_per_frame: 5        # THE LATENCY DIAL, enforced by hanging up the stream at the Nth
+                                  # object. Close to linear: halve it and you halve the wait.
+  known_objects_char_budget: 9000 # known objects fed back as recognition cues, in characters.
+                                  # Whatever is left out cannot be recognised.
+  max_known_objects_in_prompt: 40 # hard ceiling, for a store with hundreds of objects
+  min_seconds_between_annotations: 25  # between changed-state annotations; recognition is not saved
+  same_name_merge_seconds: 120    # a "new" object with a known name seen this recently is that
+                                  # object. Two detections in one frame are never merged. 0 = off.
+
+# ── Memory for a small model ────────────────────────────────────────────────
+# Budgets in characters (~4 chars = 1 token).
+memory:
+  cue_chars: 220                 # distilled memory per known object during a scan
+  context_char_budget: 1800      # ~450 tokens of full context for one object
+  max_recent_annotations: 5      # the object's latest observations in the prompt
+  max_related_entities: 3        # linked objects (shared tags / same room)
+  max_facts: 8                   # atomic facts kept per object
+  max_open_points: 4             # open questions kept per object
+  annotation_digest_chars: 140   # digest length of each recent observation

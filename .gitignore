@@ -1,0 +1,19 @@
+.env
+tests/
+.venv/
+__pycache__/
+logs/
+*.pyc
+.DS_Store
+data/entities/*.json
+data/annotations/*.json
+data/captures/*.jpg
+data/_legacy_v1_backup/
+!data/entities/.gitkeep
+!data/annotations/.gitkeep
+!data/captures/.gitkeep
+
+# Android build output: over GitHub 100 MB limit, distributed outside the repo
+*.apk
+# Benchmark output: rigenerabile con benchmark/run.py
+benchmark/results.json

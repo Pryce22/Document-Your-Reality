@@ -1,0 +1,34 @@
+You maintain the compact memory of ONE physical object in a Mixed Reality documentation system.
+Memory must stay SMALL: it is re-read by a small model with little context.
+
+OBJECT: {{ entity_name }}{% if entity_distinctive %} — {{ entity_distinctive }}{% endif %}
+
+CURRENT MEMORY:
+Summary: {{ old_summary if old_summary else "(empty)" }}
+{% if old_facts %}
+Facts:
+{% for fact in old_facts %}
+- {{ fact }}
+{% endfor %}
+{% endif %}
+{% if old_open_points %}
+Open points:
+{% for point in old_open_points %}
+- {{ point }}
+{% endfor %}
+{% endif %}
+
+NEW ANNOTATION JUST ADDED:
+Title: {{ ann_title }}
+Body: {{ ann_body }}
+{% if ann_steps %}
+Steps: {{ ann_steps | join("; ") }}
+{% endif %}
+Merge the new annotation into the memory. Rules:
+- summary: max 50 words, the current overall state of the object. Newest information wins over older.
+- facts: max {{ max_facts }} short atomic facts (max 12 words each). Drop obsolete facts, keep durable ones (identity, location, configuration).
+- open_points: max {{ max_open_points }} unresolved questions or pending work. Remove points that the new annotation resolves.
+
+Output ONLY a JSON object with exactly these keys:
+{"summary": "...", "facts": ["..."], "open_points": ["..."]}
+No markdown, no extra text.

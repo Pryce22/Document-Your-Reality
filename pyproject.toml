@@ -1,0 +1,34 @@
+[project]
+name = "document-reality-backend"
+version = "0.1.0"
+description = "Backend for Document Your Reality: headset captures anchored to Meta MRUK trackables, annotated by a vision LLM with per-object memory."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.8.0",
+    "pyyaml>=6.0.1",
+    "jinja2>=3.1.0",
+    "python-multipart>=0.0.9",
+    "pillow>=10.4.0",
+    "imageio-ffmpeg>=0.6.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "httpx>=0.27.0",
+]
+
+[project.scripts]
+dyr-backend = "document_reality.main:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/document_reality"]
