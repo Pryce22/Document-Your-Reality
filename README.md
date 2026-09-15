@@ -14,6 +14,7 @@ covers both cases.
 <p align="center">
   <img src="docs/demo.gif" alt="Labels appearing on real objects through the Quest 3 passthrough camera">
 </p>
+
 ---
 
 ## What you need
