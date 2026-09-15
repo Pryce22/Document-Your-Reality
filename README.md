@@ -11,6 +11,8 @@ It works the same from an **mp4 file** (no headset) and from the **Quest 3 / 3S 
 camera**: only where the label ends up changes. The source is chosen **at runtime**, so one build
 covers both cases.
 
+![Labels appearing on real objects through the Quest 3 passthrough camera](docs/demo.gif)
+
 ---
 
 ## What you need
