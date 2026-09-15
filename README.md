@@ -20,7 +20,7 @@ covers both cases.
 | **PC** | Python 3.11+ with [`uv`](https://docs.astral.sh/uv/), on the same Wi-Fi as the headset |
 | **Model** | a vision model **with grounding** (it can say *where* objects are) behind an OpenAI-compatible API. Served by vLLM, Ollama, LM Studio or OpenAI |
 | **Headset** *(optional)* | Meta Quest 3 or 3S. Without one, video mode is used instead |
-| **Unity** *(only to modify the client)* | Unity 6000.3 LTS+ and the Meta XR SDK, see [In Unity](#in-unity) |
+| **Unity** | Unity 6000.3 LTS+ and the Meta XR SDK, see [In Unity](#in-unity) |
 
 **The APK and the Unity project are not in this repository**: they exceed GitHub's limits (the
 project zip is around 4.7 GB) and are distributed separately. To get them, **contact us**.
